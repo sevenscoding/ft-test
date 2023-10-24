@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ARTICLE_API_URL } from "~/constants";
 import { defineAsyncComponent } from 'vue';
-
 const ContentCreator = defineAsyncComponent(() =>
   import('~/components/common/ContentCreator.vue')
 );
@@ -16,7 +15,7 @@ const route = useRoute();
 const id = route.params?.slug;
 const { data } = await useFetch(`${ARTICLE_API_URL}${id}`);
 
-if (data) {
+if (data.value) {
   const { body, meta, page_type } = data?.value;
   pageType.value = page_type;
   bodyData.value = body;
@@ -34,7 +33,7 @@ useHead({
 
 <template lang="pug">
 NuxtLayout(:name="layoutName")
-  .article
+  .article(v-if="data")
     ContentCreator(:content="bodyData" :type="pageType")
 </template>
 
